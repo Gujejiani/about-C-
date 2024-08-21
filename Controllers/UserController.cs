@@ -6,11 +6,20 @@ namespace DotnetAPI.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-       public UserController() {
+         DataContextDapper _dapper;
+       public UserController(IConfiguration config ) {
+
+            _dapper = new DataContextDapper(config);
+
+            Console.WriteLine("Connection string " + config.GetConnectionString("DefaultConnection"));
 
         }
     
-
+        [HttpGet("TestConnection")]
+        public string TestConnection()
+        {
+            return _dapper.LoadDataSingle<DateTime>("SELECT GETDATE()" as string).ToString();
+        }
         // Fix the conflicting route by giving it a unique path
         [HttpGet("getUsers/{testValue}")]
         
