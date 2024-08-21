@@ -33,6 +33,19 @@ namespace DotnetAPI {
             return dbConnection.QuerySingle<T>(sql);
         }
 
+
+        public  bool executeSql(string sql) {
+            IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+        
+            return dbConnection.Execute(sql) > 0;
+        }
+
+        public int executeWithRowCount(string sql) {
+            IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+        
+            return dbConnection.Execute(sql);
+        } 
+
     }
 }
 
