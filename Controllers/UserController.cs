@@ -71,7 +71,7 @@ namespace DotnetAPI.Controllers;
         }
 
         [HttpPost("AddUser")]
-        public IActionResult AddUser(User user) {
+        public IActionResult AddUser(UserAddDto user) {
             string sql = @"
                INSERT INTO TutorialAppSchema.Users(
                     [FirstName],
