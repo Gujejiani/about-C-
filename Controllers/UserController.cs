@@ -99,6 +99,20 @@ namespace DotnetAPI.Controllers;
         }
 
 
+        [HttpDelete("DeleteUser/{userId}")] 
+
+        public IActionResult DeleteUser(int userId) {
+            string sql = @"
+                DELETE FROM TutorialAppSchema.Users WHERE UserId = " + userId;
+
+            Console.WriteLine(sql);
+            if(_dapper.executeSql(sql)){
+                return Ok();
+            }
+            
+             throw new Exception("Failed to delete user");
+        }
+
     }
 
     
