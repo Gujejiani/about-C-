@@ -21,16 +21,32 @@ namespace DotnetAPI.Controllers
             return _dapper.LoadDataSingle<DateTime>("SELECT GETDATE()" as string).ToString();
         }
         // Fix the conflicting route by giving it a unique path
-        [HttpGet("getUsers/{testValue}")]
+        [HttpGet("getUsers")]
         
-        public string[] getUsers(string testValue)
+        public User[] getUsers()
 
         {
-            string [] response = new string[]{
-                "Hello",
-                "World",
-                testValue
-            };
+            string sql = @"
+            SELECT [UserId],
+                    [FirstName],
+                    [LastName],
+                    [Email],
+                    [Gender],
+                    [Active] FROM TutorialAppSchema.Users
+            ";
+            User[] response = _dapper.LoadData<User>(sql).ToArray();
+            
+
+            return response;
+        }
+
+        [HttpGet("getSingleUser/{userId}")]
+        
+        public User getSingleUser(int userId)
+
+        {
+            
+            User response = _dapper.LoadDataSingle<User>($"SELECT * FROM TutorialAppSchema.Users WHERE UserId = {userId}");
             
 
             return response;
