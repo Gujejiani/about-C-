@@ -1,6 +1,7 @@
 
 
-namespace DotnetAPI
+namespace DotnetAPI.Models
+
 
 {
     public partial class UserSalary {
