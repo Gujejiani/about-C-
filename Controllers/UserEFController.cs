@@ -12,7 +12,11 @@ namespace DotnetAPI.Controller;
     {
          DataContextEF _entityFramework;
          IMapper _mapper;
-       public UserEFController(IConfiguration config ) {
+
+         IUserRepository _userRepository;
+       public UserEFController(IConfiguration config, IUserRepository userRepository) {
+
+            _userRepository = userRepository;
 
             _entityFramework = new DataContextEF(config);
             _mapper = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<UserAddDto, User>()));
@@ -61,7 +65,7 @@ namespace DotnetAPI.Controller;
                 userDb.Active = user.Active;
                   userDb.Gender = user.Gender;
             }
-            if(_entityFramework.SaveChanges() > 0){
+            if(_userRepository.SaveChanges()){
                 return Ok();
             }
 
@@ -80,9 +84,8 @@ namespace DotnetAPI.Controller;
                 // userDb.Email = user.Email;
                 // userDb.Active = user.Active;
                 //   userDb.Gender = user.Gender;
-
-            _entityFramework.Add(userDb);
-            if(_entityFramework.SaveChanges() > 0){
+            _userRepository.AddEntity<User>(userDb);
+            if(_userRepository.SaveChanges()){
                 return Ok();
             }
 
@@ -99,9 +102,9 @@ namespace DotnetAPI.Controller;
                 
             if(userDb !=null){
                 
-                _entityFramework.Users.Remove(userDb);
+               _userRepository.RemoveEntity(userDb);
             }
-            if(_entityFramework.SaveChanges() > 0){
+            if(_userRepository.SaveChanges()){
                 return Ok();
             }
 
