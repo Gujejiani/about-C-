@@ -1,3 +1,5 @@
+using DotnetAPI.Models;
+
 namespace DotnetAPI.Data 
 
     {
@@ -7,7 +9,10 @@ namespace DotnetAPI.Data
 
             public void AddEntity<T>(T entityToAdd);
 
-             public void RemoveEntity<T>(T entityToRemove);
+            public void RemoveEntity<T>(T entityToRemove);
+
+            public IEnumerable<User> getUsers();
+             public User getSingleUser(int userId);
           }
 
     }

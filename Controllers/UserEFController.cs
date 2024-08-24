@@ -10,7 +10,7 @@ namespace DotnetAPI.Controller;
     [Route("[controller]")]
     public class UserEFController : ControllerBase
     {
-         DataContextEF _entityFramework;
+       
          IMapper _mapper;
 
          IUserRepository _userRepository;
@@ -18,7 +18,7 @@ namespace DotnetAPI.Controller;
 
             _userRepository = userRepository;
 
-            _entityFramework = new DataContextEF(config);
+            
             _mapper = new Mapper(new MapperConfiguration(cfg => cfg.CreateMap<UserAddDto, User>()));
 
             Console.WriteLine("Connection string " + config.GetConnectionString("DefaultConnection"));
@@ -33,7 +33,7 @@ namespace DotnetAPI.Controller;
 
         {
             
-            IEnumerable<User> response = _entityFramework.Users.ToList<User>();
+            IEnumerable<User> response = _userRepository.getUsers();
             
 
             return response;
@@ -45,7 +45,7 @@ namespace DotnetAPI.Controller;
 
         {
             
-            User? user = _entityFramework.Users.Where(u => u.UserId == userId).FirstOrDefault<User>();
+            User? user = _userRepository.getSingleUser(userId);
 
             if(user != null){
                return user;
@@ -55,7 +55,7 @@ namespace DotnetAPI.Controller;
         }
         [HttpPut("EditUser")]
         public IActionResult EditUser(User user) {
-             User? userDb = _entityFramework.Users.Where(u => u.UserId == user.UserId).FirstOrDefault<User>();
+             User? userDb = _userRepository.getSingleUser(user.UserId);
 
                 
             if(userDb !=null){
@@ -97,7 +97,7 @@ namespace DotnetAPI.Controller;
         [HttpDelete("DeleteUser/{userId}")] 
 
         public IActionResult DeleteUser(int userId) {
-            User? userDb = _entityFramework.Users.Where(u => u.UserId == userId).FirstOrDefault<User>();
+            User? userDb = _userRepository.getSingleUser(userId);
 
                 
             if(userDb !=null){
