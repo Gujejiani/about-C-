@@ -135,4 +135,26 @@ public IEnumerable<Post> GetMyPosts()
             throw new Exception("Failed to delete post");
         }
 
+
+
+
+
+
+
+
+
+   [HttpGet("PostBySearch/{searchParam}")]
+public IEnumerable<Post> PostBySearch(string searchParam)
+{
+    
+
+    // Use a parameterized query to avoid SQL injection
+    string sql = $"SELECT * FROM TutorialAppSchema.Posts WHERE  postTitle LIKE '%{searchParam}%'  OR postContent LIKE '%{searchParam}%';";
+
+    // Load multiple posts instead of a single post
+    IEnumerable<Post> response = _dapper.LoadData<Post>(sql);
+
+    return response;
+}
+
     }
